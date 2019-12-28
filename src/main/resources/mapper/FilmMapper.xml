@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bml.dao.FilmDao">
+    <resultMap id="film" type="bml.entity.Film">
+        <id column="film_id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="description" property="description"/>
+        <result column="release_year" property="release_year"/>
+        <result column="language_id" property="language_id"/>
+        <result column="rental_duration" property="rental_duration"/>
+        <result column="rental_rate" property="rental_rate"/>
+        <result column="length" property="length"/>
+        <result column="last_update" property="last_update"/>
+    </resultMap>
+
+    <insert id="addFilm" parameterType="bml.entity.Film">
+        insert into film(title,description,release_year,language_id,rental_duration,rental_rate,length,last_update)
+        VALUES(#{title},#{description},#{release_year},#{language_id},#{rental_duration},#{rental_rate},#{length},#{last_update});
+    </insert>
+
+    <update id="updateFilms" parameterType="bml.entity.Film">
+        update film
+        <set>
+            <if test="title != null">
+                title=#{title},
+            </if>
+            <if test="description != null">
+                description=#{description},
+            </if>
+            <if test="release_year != null">
+                release_year=#{release_year},
+            </if>
+            <if test="language_id != null">
+                language_id=#{language_id},
+            </if>
+            <if test="rental_duration != null">
+                rental_duration=#{rental_duration},
+            </if>
+            <if test="rental_rate != null">
+                rental_rate=#{rental_rate},
+            </if>
+            <if test="length != null">
+                length=#{length},
+            </if>
+            <if test="last_update != null">
+                last_update=#{last_update}
+            </if>
+        </set>
+        WHERE film_id=#{id}
+    </update>
+
+    <delete id="deleteFilm" parameterType="short">
+        delete from film where film_id=#{id}
+    </delete>
+
+    <select id="getAllFilms" resultMap="film">
+        select * from film
+    </select>
+
+    <select id="getFilmByID" parameterType="short" resultMap="film">
+        select * from film where film_id=#{id}
+    </select>
+
+</mapper>

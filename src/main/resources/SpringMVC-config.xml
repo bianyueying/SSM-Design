@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--MVC只扫描Controller包-->
+    <context:component-scan base-package="bml.controller" />
+
+    <!--两个标配 切记不要引用Cache空间 否则无法运行-->
+    <mvc:annotation-driven />
+    <mvc:default-servlet-handler />
+
+    <!--视图解析器，前缀后缀-->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+        <property name="prefix" value="/WEB-INF/pages/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- 配置文件上传解析器，id必须是下例所示 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 限制文件上传大小，1024为1KB，1024*1024为1MB 下例所示 文件最大是5MB-->
+        <property name="maxUploadSize" value="#{1024*1024*5}"/>
+        <!-- 配置默认的上传编码 -->
+        <property name="defaultEncoding" value="utf-8" />
+    </bean>
+</beans>

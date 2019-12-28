@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bml.dao.ActorDao">
+
+    <resultMap id="actor" type="bml.entity.Actor">
+        <id column="actor_id" property="id" />
+        <result column="first_name" property="first_name"/>
+        <result column="last_name" property="last_name"/>
+        <result column="last_update" property="last_update"/>
+    </resultMap>
+
+    <insert id="insertActor" useGeneratedKeys="true" keyProperty="id" parameterType="Actor">
+        insert into actor (first_name,last_name,last_update)
+	    values (#{first_name},#{last_name},#{last_update})
+    </insert>
+
+    <!-- 通常用set+if标签用于更新操作，避免前端没有上传的PO字段被置空 -->
+    <update id="updateActor" parameterType="Actor">
+        update actor
+        <set>
+            <if test="first_name != null">
+                first_name = #{first_name,jdbcType=VARCHAR},
+            </if>
+            <if test="last_name != null">
+                last_name = #{last_name,jdbcType=VARCHAR},
+            </if>
+            <if test="last_update != null">
+                last_update = #{last_update,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where actor_id = #{id}
+    </update>
+
+    <delete id="deleteActorbyid" parameterType="int">
+        delete from actor where actor_id = #{id}
+    </delete>
+
+    <select id="getAllActors" resultMap="actor">
+        select * from actor
+    </select>
+
+    <select id="getActorbyid" resultMap="actor">
+        select * from actor where actor_id=#{id}
+    </select>
+
+
+</mapper>
